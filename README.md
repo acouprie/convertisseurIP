@@ -1,9 +1,18 @@
-Convertisseur IPv4
+# Convertisseur IPv4
 
-sudo apt update
+## Installation
 
-sudo apt install ruby
+```bash
+$sudo apt update
 
-sudo apt install gtk2
+$sudo apt install ruby
 
-ruby convertor.rb
+$sudo apt install ruby-gtk2
+```
+
+
+## Launch
+```bash
+$ruby convertor.rb
+```
+
