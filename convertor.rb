@@ -124,14 +124,36 @@ submit.signal_connect('clicked') {
   end
   num_comps = comps_1 * comps_2 * comps_3 * comps_4
 
+  # store important addresses
+  network_address = Array.new
+  brodcast_address = Array.new
+  network_address.push(first_address_1, first_address_2, first_address_3, first_address_4)
+  brodcast_address.push(last_address_1, last_address_2, last_address_3, last_address_4)
+
+  # classes
+  classe_a = "127.255.255.255"
+  classe_b = "191.255.255.255"
+  classe_c = "223.255.255.255"
+  if network_address.join(".") < classe_a
+    classe = 'A'
+  elsif network_address.join(".") > classe_a && network_address.join(".") < classe_b
+    classe = 'B'
+  elsif network_address.join(".") > classe_b && network_address.join(".") < classe_c
+    classe = 'C'
+  else
+    classe = "E ou D"
+  end
+
   info = Gtk::MessageDialog.new(window, Gtk::Dialog::DESTROY_WITH_PARENT,
                              Gtk::MessageDialog::INFO,
                              Gtk::MessageDialog::BUTTONS_CLOSE,
-                             "Adresse du réseau : #{first_address_1}.#{first_address_2}.#{first_address_3}.#{first_address_4} "\
-                             "Adresse  broadcast du réseau : #{last_address_1}.#{last_address_2}.#{last_address_3}.#{last_address_4} "\
-                             "Première adresse du réseau : #{first_address_1}.#{first_address_2}.#{first_address_3}.#{first_address_4+1} "\
-                             "Dernière adresse du réseau : #{last_address_1}.#{last_address_2}.#{last_address_3}.#{last_address_4-1} "\
-                             "Nombre de machines possible sur ce réseau : #{num_comps}")
+                             "Adresse du réseau : #{network_address.join(".")} \n"\
+                             "Adresse  broadcast du réseau : #{brodcast_address.join(".")} \n"\
+                             "Première adresse du réseau : #{network_address[0]}.#{network_address[1]}.#{network_address[2]}.#{network_address[3]+1} \n"\
+                             "Dernière adresse du réseau : #{brodcast_address[0]}.#{brodcast_address[1]}.#{brodcast_address[2]}.#{brodcast_address[3]-1} \n"\
+                             "Réseau de classe #{classe} \n"\
+                             "Nombre de machines possible sur ce réseau : #{num_comps} \n")
+  info.set_default_size(1000, 1000)
   info.run
   info.destroy
 }
