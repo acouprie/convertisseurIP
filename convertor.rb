@@ -29,6 +29,11 @@ last_address_1 = 0
 last_address_2 = 0
 last_address_3 = 0
 last_address_4 = 0
+
+comps_1 = 1
+comps_2 = 1
+comps_3 = 1
+comps_4 = 1
 # Submit button
 submit = Gtk::Button.new(Gtk::Stock::OK)
 submit.signal_connect('clicked') {
@@ -93,31 +98,42 @@ submit.signal_connect('clicked') {
     end while i < ip_3
   end
 
-    magic_number = 256-mask_4
-    i = 0
-    j = 0
-    begin
-      print " #{i} "
-      while j < (ip_4 - magic_number)
-        print " #{j} "
-        j += magic_number
-        first_address_4 = j
-      end
-      i += magic_number
-      last_address_4 = i - 1
-    end while i < ip_4
-  d = Gtk::MessageDialog.new(window, Gtk::Dialog::DESTROY_WITH_PARENT,
+  magic_number = 256-mask_4
+  i = 0
+  j = 0
+  begin
+    print " #{i} "
+    while j < (ip_4 - magic_number)
+      print " #{j} "
+      j += magic_number
+      first_address_4 = j
+    end
+    i += magic_number
+    last_address_4 = i - 1
+  end while i < ip_4
+
+  comps_4 = last_address_4 - first_address_4
+  if last_address_3 != first_address_3
+    comps_3 = last_address_3 - first_address_3
+  end
+  if last_address_2 != first_address_2
+    comps_2 = last_address_2 - first_address_2
+  end
+  if last_address_1 != first_address_1
+    comps_1 = last_address_1 - first_address_1
+  end
+  num_comps = comps_1 * comps_2 * comps_3 * comps_4
+
+  info = Gtk::MessageDialog.new(window, Gtk::Dialog::DESTROY_WITH_PARENT,
                              Gtk::MessageDialog::INFO,
                              Gtk::MessageDialog::BUTTONS_CLOSE,
-                             "Première adresse du réseau : #{first_address_1}.#{first_address_2}.#{first_address_3}.#{first_address_4} "\
-                             "Dernière adresse du réseau : #{last_address_1}.#{last_address_2}.#{last_address_3}.#{last_address_4} "\
+                             "Adresse du réseau : #{first_address_1}.#{first_address_2}.#{first_address_3}.#{first_address_4} "\
+                             "Adresse  broadcast du réseau : #{last_address_1}.#{last_address_2}.#{last_address_3}.#{last_address_4} "\
+                             "Première adresse du réseau : #{first_address_1}.#{first_address_2}.#{first_address_3}.#{first_address_4+1} "\
+                             "Dernière adresse du réseau : #{last_address_1}.#{last_address_2}.#{last_address_3}.#{last_address_4-1} "\
                              "Nombre de machines possible sur ce réseau : #{num_comps}")
-  d.run
-  d.destroy
-  first_address = "Première adresse du réseau : #{first_address_1}.#{first_address_2}.#{first_address_3}.#{first_address_4} "
-  print first_address
-  last_address = "Dernière adresse du réseau : #{last_address_1}.#{last_address_2}.#{last_address_3}.#{last_address_4} "
-  print last_address
+  info.run
+  info.destroy
 }
 # Contain elements
 ip_container = Gtk::HBox.new(false, 6)
